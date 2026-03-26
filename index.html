@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kószó Kamill — AI stratégia, közösségépítés, írás</title>
+    <meta name="description" content="AI stratéga, az AI Budapest és az 1337 Partners alapítója. Közösségépítés, tanácsadás, előadások.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,300;1,8..60,400;1,8..60,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #FAFAF9;
+            --ink: #18181B;
+            --ink-700: #3F3F46;
+            --ink-500: #71717A;
+            --ink-400: #A1A1AA;
+            --ink-300: #D4D4D8;
+            --ink-200: #E4E4E7;
+            --ink-100: #F4F4F5;
+            --accent: #78350F;
+            --accent-hover: #92400E;
+            --accent-bg: #78350F08;
+            --col: 660px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Source Serif 4', Georgia, serif;
+            background: var(--bg);
+            color: var(--ink);
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        ::selection {
+            background: #78350F20;
+            color: var(--ink);
+        }
+
+        /* ========== NAV ========== */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: #FAFAF9ee;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease;
+            padding: 0 24px;
+        }
+
+        nav.scrolled { border-color: var(--ink-200); }
+
+        nav .nav-inner {
+            max-width: 1080px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 72px;
+        }
+
+        nav .logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.2rem;
+            color: var(--ink);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+        }
+
+        nav .logo em { font-style: italic; }
+
+        nav .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+
+        nav .nav-links a {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--ink-500);
+            text-decoration: none;
+            letter-spacing: 0.01em;
+            transition: color 0.2s;
+        }
+
+        nav .nav-links a:hover { color: var(--ink); }
+
+        .nav-cta {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            background: var(--ink);
+            color: var(--bg);
+            padding: 8px 18px;
+            border-radius: 100px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .nav-cta:hover { background: var(--accent); }
+
+        /* ========== HERO ========== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 120px 24px 80px;
+        }
+
+        .hero-inner {
+            max-width: 1080px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            line-height: 1.08;
+            margin-bottom: 28px;
+        }
+
+        .hero-text h1 em {
+            font-style: italic;
+        }
+
+        .hero-text h1 .muted {
+            color: var(--ink-400);
+        }
+
+        .hero-intro {
+            font-size: 1.15rem;
+            color: var(--ink-700);
+            max-width: 520px;
+            margin-bottom: 40px;
+            line-height: 1.85;
+            font-weight: 300;
+        }
+
+        .hero-subscribe {
+            display: flex;
+            gap: 10px;
+            max-width: 420px;
+            margin-bottom: 14px;
+        }
+
+        .hero-subscribe input {
+            flex: 1;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            padding: 14px 20px;
+            border: 1px solid var(--ink-300);
+            border-radius: 8px;
+            background: white;
+            color: var(--ink);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .hero-subscribe input::placeholder {
+            color: var(--ink-400);
+        }
+
+        .hero-subscribe input:focus {
+            border-color: var(--ink-500);
+            box-shadow: 0 0 0 3px #18181B0a;
+        }
+
+        .hero-subscribe button {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            background: var(--ink);
+            color: var(--bg);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .hero-subscribe button:hover {
+            background: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .hero-note {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.78rem;
+            color: var(--ink-400);
+        }
+
+        .hero-social {
+            display: flex;
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .hero-social a {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--ink-400);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .hero-social a:hover { color: var(--accent); }
+
+        /* Photo */
+        .hero-photo-wrap {
+            position: relative;
+        }
+
+        .hero-photo-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 12px -12px -12px 12px;
+            border: 1px solid var(--ink-200);
+            border-radius: 16px;
+        }
+
+        .hero-photo {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border-radius: 16px;
+            filter: grayscale(40%) contrast(1.05);
+            transition: filter 0.6s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-photo:hover {
+            filter: grayscale(0%);
+        }
+
+        /* ========== DIVIDER ========== */
+        .divider {
+            max-width: var(--col);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .divider hr {
+            border: none;
+            height: 1px;
+            background: var(--ink-200);
+        }
+
+        /* ========== EDITORIAL SECTIONS ========== */
+        .editorial {
+            max-width: var(--col);
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        .editorial .label {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .editorial h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            margin-bottom: 28px;
+        }
+
+        .editorial h2 em { font-style: italic; }
+
+        .editorial p {
+            color: var(--ink-700);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .editorial p strong {
+            color: var(--ink);
+            font-weight: 500;
+        }
+
+        /* Pull quote */
+        .pull-quote {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--ink);
+            margin: 56px 0;
+            padding-left: 28px;
+            border-left: 2px solid var(--accent);
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+        }
+
+        /* ========== TIMELINE ========== */
+        .timeline-list {
+            margin-top: 48px;
+        }
+
+        .tl-item {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 20px;
+            padding: 24px 0;
+            border-top: 1px solid var(--ink-200);
+            transition: padding-left 0.2s ease;
+        }
+
+        .tl-item:last-child {
+            border-bottom: 1px solid var(--ink-200);
+        }
+
+        .tl-item:hover { padding-left: 8px; }
+
+        .tl-year {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            color: var(--accent);
+            font-size: 1rem;
+            padding-top: 2px;
+        }
+
+        .tl-title {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+
+        .tl-desc {
+            font-family: 'Source Serif 4', serif;
+            font-size: 0.92rem;
+            color: var(--ink-500);
+            font-weight: 300;
+        }
+
+        /* ========== WORK ========== */
+        .work-list {
+            margin-top: 40px;
+        }
+
+        .work-item {
+            padding: 32px 0;
+            border-top: 1px solid var(--ink-200);
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 24px;
+            align-items: baseline;
+            transition: padding-left 0.25s ease;
+        }
+
+        .work-item:last-child { border-bottom: 1px solid var(--ink-200); }
+        .work-item:hover { padding-left: 8px; }
+
+        .work-item h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.4rem;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            margin-bottom: 6px;
+        }
+
+        .work-item .work-desc {
+            font-size: 0.95rem;
+            color: var(--ink-500);
+            font-weight: 300;
+        }
+
+        .work-num {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            color: var(--ink-300);
+            font-size: 1.1rem;
+        }
+
+        /* ========== PROOF ========== */
+        .proof-strip {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 60px 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .proof-strip span {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--ink-400);
+            letter-spacing: 0.02em;
+            transition: color 0.2s;
+        }
+
+        .proof-strip span:hover { color: var(--ink); }
+
+        .proof-dot {
+            width: 3px; height: 3px;
+            border-radius: 50%;
+            background: var(--ink-300);
+        }
+
+        /* ========== NEWSLETTER BOTTOM ========== */
+        .newsletter-bottom {
+            max-width: 540px;
+            margin: 0 auto;
+            padding: 100px 24px;
+            text-align: center;
+        }
+
+        .newsletter-bottom h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+        }
+
+        .newsletter-bottom h2 em { font-style: italic; }
+
+        .newsletter-bottom .desc {
+            color: var(--ink-500);
+            font-size: 1.05rem;
+            margin-bottom: 36px;
+            font-weight: 300;
+        }
+
+        .nl-form-bottom {
+            display: flex;
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto 14px;
+        }
+
+        .nl-form-bottom input {
+            flex: 1;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            padding: 14px 20px;
+            border: 1px solid var(--ink-300);
+            border-radius: 8px;
+            background: white;
+            color: var(--ink);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .nl-form-bottom input::placeholder { color: var(--ink-400); }
+        .nl-form-bottom input:focus { border-color: var(--ink-500); box-shadow: 0 0 0 3px #18181B0a; }
+
+        .nl-form-bottom button {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            background: var(--ink);
+            color: var(--bg);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .nl-form-bottom button:hover { background: var(--accent); transform: translateY(-1px); }
+
+        .nl-note-bottom {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.75rem;
+            color: var(--ink-400);
+        }
+
+        .nl-success {
+            display: none;
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--accent);
+            padding: 12px 0;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            border-top: 1px solid var(--ink-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        footer .flinks {
+            display: flex;
+            gap: 24px;
+        }
+
+        footer .flinks a {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: var(--ink-400);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer .flinks a:hover { color: var(--accent); }
+
+        footer .copy {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.72rem;
+            color: var(--ink-400);
+        }
+
+        /* ========== ANIMATIONS ========== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero staggered entrance */
+        .hero-text > * {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .hero-text > *:nth-child(1) { animation-delay: 0.1s; }
+        .hero-text > *:nth-child(2) { animation-delay: 0.2s; }
+        .hero-text > *:nth-child(3) { animation-delay: 0.35s; }
+        .hero-text > *:nth-child(4) { animation-delay: 0.45s; }
+        .hero-text > *:nth-child(5) { animation-delay: 0.55s; }
+        .hero-text > *:nth-child(6) { animation-delay: 0.65s; }
+
+        .hero-photo-wrap {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Link underline animation */
+        .animated-link {
+            color: var(--accent);
+            text-decoration: none;
+            background-image: linear-gradient(var(--accent), var(--accent));
+            background-size: 0% 1px;
+            background-position: left bottom;
+            background-repeat: no-repeat;
+            transition: background-size 0.3s ease;
+        }
+
+        .animated-link:hover {
+            background-size: 100% 1px;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 900px) {
+            .hero-inner {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .hero-photo-wrap {
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            .hero { padding: 100px 24px 60px; }
+        }
+
+        @media (max-width: 600px) {
+            body { font-size: 17px; }
+
+            .hero-subscribe { flex-direction: column; }
+            .nl-form-bottom { flex-direction: column; }
+
+            nav .nav-links { display: none; }
+
+            .tl-item { grid-template-columns: 80px 1fr; gap: 12px; }
+
+            .work-item {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+            .work-num { display: none; }
+
+            .proof-strip { gap: 12px 24px; }
+            .proof-dot { display: none; }
+
+            footer { flex-direction: column; gap: 16px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav id="nav">
+        <div class="nav-inner">
+            <a href="#" class="logo"><em>K</em>ószó Kamill</a>
+            <ul class="nav-links">
+                <li><a href="#rolam">Rólam</a></li>
+                <li><a href="#munka">Munkám</a></li>
+                <li><a href="#hirlevel">Hírlevél</a></li>
+            </ul>
+            <a href="#hirlevel" class="nav-cta">Feliratkozom</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-text">
+                <h1>
+                    <em>A</em>I stratégia,<br>
+                    közösségépítés<br>
+                    <span class="muted">és tiszta gondolkodás.</span>
+                </h1>
+                <p class="hero-intro">
+                    Service designerből lettem AI stratéga. Az AI Budapestet építem, cégeket segítek AI-val gondolkodni, és írok arról, ami igazán számít ebben az átalakulásban.
+                </p>
+                <form class="hero-subscribe" id="hero-form">
+                    <input type="email" placeholder="az@emailed.hu" required>
+                    <button type="submit">Feliratkozom</button>
+                </form>
+                <p class="hero-note">Heti gondolatok AI-ról, stratégiáról, és ami nem fér a feedbe.</p>
+                <div class="hero-social">
+                    <a href="https://www.linkedin.com/in/koszokamill/" target="_blank" rel="noopener">LinkedIn</a>
+                    <a href="https://x.com/koszokamill" target="_blank" rel="noopener">X</a>
+                    <a href="https://aibudapest.substack.com/" target="_blank" rel="noopener">Substack</a>
+                    <a href="https://medium.com/@kamill" target="_blank" rel="noopener">Medium</a>
+                </div>
+            </div>
+            <div class="hero-photo-wrap">
+                <img src="assets/kamill.jpg" alt="Kószó Kamill" class="hero-photo">
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"><hr></div>
+
+    <!-- About -->
+    <div class="editorial reveal" id="rolam">
+        <p class="label">Rólam</p>
+        <h2><em>N</em>em a technológia<br>az érdekes</h2>
+        <p>
+            Nyolc évig service designerként dolgoztam. Ötven cégnél segítettem megérteni, mit akarnak valójában az ügyfeleik, és hogyan építsenek jobb szolgáltatásokat. A <strong>Meet Perspectives</strong>-t azért hoztuk létre, mert hittünk benne, hogy a jó kérdések többet érnek a gyors válaszoknál.
+        </p>
+        <p>
+            Aztán jött az AI, és minden megváltozott. Nem a technológia fogott meg, hanem az, amit lehetővé tesz: hogy egyetlen ember vagy kis csapat olyat építsen, amihez korábban egy egész szervezet kellett. Ez a gondolat nem hagyott nyugodni.
+        </p>
+
+        <div class="pull-quote">
+            Nem implementálni segítek. Gondolkodni.
+        </div>
+
+        <p>
+            Az <strong>MBH Banknál</strong> GenAI innovációs programot vezettem, ahol power userek közösségét építettem, akik valódi üzleti problémákra kerestek AI megoldásokat. A módszertanunk <strong>Qorus nemzetközi innovációs díjat</strong> kapott.
+        </p>
+        <p>
+            Ma az <strong>AI Budapest</strong> közösséget építem és az <strong>1337 Partners</strong>-nél cégeknek segítek AI-val gondolkodni.
+        </p>
+
+        <div class="timeline-list">
+            <div class="tl-item">
+                <div class="tl-year">2025 –</div>
+                <div>
+                    <div class="tl-title">1337 Partners</div>
+                    <div class="tl-desc">AI stratégia és implementáció, Financial Services fókusszal</div>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-year">2024 –</div>
+                <div>
+                    <div class="tl-title">AI Budapest</div>
+                    <div class="tl-desc">1000+ fős közösség AI buildereknek. Meetupok, hackathonok, workshopok, hírlevél.</div>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-year">2024</div>
+                <div>
+                    <div class="tl-title">MBH Bank</div>
+                    <div class="tl-desc">GenAI innovációs program, power user közösség, Qorus nemzetközi díj</div>
+                </div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-year">2016 – 24</div>
+                <div>
+                    <div class="tl-title">Meet Perspectives</div>
+                    <div class="tl-desc">Service design tanácsadás, 50+ cég, startuptól nagyvállalatokig</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"><hr></div>
+
+    <!-- Work -->
+    <div class="editorial reveal" id="munka">
+        <p class="label">Amit csinálok</p>
+        <h2><em>T</em>öbb lábon állok</h2>
+
+        <div class="work-list">
+            <div class="work-item">
+                <div>
+                    <h3>AI Stratégia</h3>
+                    <p class="work-desc">Cégeknek, akik nem akarnak csak beszélni az AI-ról, hanem használni is. Stratégia, roadmap, implementáció.</p>
+                </div>
+                <div class="work-num">01</div>
+            </div>
+            <div class="work-item">
+                <div>
+                    <h3>Közösségépítés</h3>
+                    <p class="work-desc">AI Budapest: meetupok, hackathonok, workshopok. A hely, ahol a magyar AI ökoszisztéma épül.</p>
+                </div>
+                <div class="work-num">02</div>
+            </div>
+            <div class="work-item">
+                <div>
+                    <h3>Előadások & Workshopok</h3>
+                    <p class="work-desc">Konferenciákon, cégeknél, egyetemeken. A vibe-driven designtől az AI adopcióig.</p>
+                </div>
+                <div class="work-num">03</div>
+            </div>
+            <div class="work-item">
+                <div>
+                    <h3>Írás & Gondolkodás</h3>
+                    <p class="work-desc">Substack, Medium, és hamarosan saját hírlevél. Ami túlmutat a hypeon.</p>
+                </div>
+                <div class="work-num">04</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Proof strip -->
+    <div class="proof-strip reveal">
+        <span>Portfolio.hu</span>
+        <div class="proof-dot"></div>
+        <span>Service Design Day</span>
+        <div class="proof-dot"></div>
+        <span>MBH Bank</span>
+        <div class="proof-dot"></div>
+        <span>Qorus Awards</span>
+        <div class="proof-dot"></div>
+        <span>AI Budapest</span>
+        <div class="proof-dot"></div>
+        <span>1337 Partners</span>
+    </div>
+
+    <div class="divider"><hr></div>
+
+    <!-- Newsletter bottom -->
+    <div class="newsletter-bottom reveal" id="hirlevel">
+        <h2><em>G</em>ondolatok, amik<br>nem férnek bele egy posztba</h2>
+        <p class="desc">AI stratégia, közösségépítés, és az a fajta gondolkodás, amit nem találsz meg a hírfolyamodban. Hetente egyszer, tömören.</p>
+        <form class="nl-form-bottom" id="nl-form">
+            <input type="email" placeholder="az@emailed.hu" required>
+            <button type="submit">Feliratkozom</button>
+        </form>
+        <p class="nl-note-bottom">Nem spam. Bármikor leiratkozhatsz.</p>
+        <p class="nl-success" id="nl-success">Köszi! Hamarosan jelentkezem.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="flinks">
+            <a href="https://www.linkedin.com/in/koszokamill/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://x.com/koszokamill" target="_blank" rel="noopener">X</a>
+            <a href="https://aibudapest.substack.com/" target="_blank" rel="noopener">Substack</a>
+            <a href="https://medium.com/@kamill" target="_blank" rel="noopener">Medium</a>
+        </div>
+        <p class="copy">&copy; 2026 Kószó Kamill</p>
+    </footer>
+
+    <script>
+        // Nav scroll
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // Reveal on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Forms
+        document.querySelectorAll('#hero-form, #nl-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+                console.log('Feliratkozás:', email);
+
+                if (this.id === 'nl-form') {
+                    this.style.display = 'none';
+                    document.getElementById('nl-success').style.display = 'block';
+                } else {
+                    this.innerHTML = '<p style="font-family:Instrument Serif,serif;font-style:italic;font-size:1.1rem;color:#78350F;padding:14px 0">Köszi! Hamarosan jelentkezem.</p>';
+                }
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+
+
+</body>
+</html>
