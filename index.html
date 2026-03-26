@@ -832,19 +832,62 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        // Supabase config
+        const SUPABASE_URL = 'https://bnddeajgqezmxzncfnas.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJuZGRlYWpncWV6bXh6bmNmbmFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1MzAzNTUsImV4cCI6MjA5MDEwNjM1NX0.qelhn0mhngV8ZY9Kphr5r01u9U39f6Fq6hzMK7k_2Bk';
+
+        async function subscribe(email, form) {
+            const button = form.querySelector('button');
+            const originalText = button.textContent;
+            button.textContent = 'Küldés...';
+            button.disabled = true;
+
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/subscribers`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                if (res.ok) {
+                    // Siker
+                    if (form.id === 'nl-form') {
+                        form.style.display = 'none';
+                        document.getElementById('nl-success').style.display = 'block';
+                    } else {
+                        form.innerHTML = '<p style="font-family:Instrument Serif,serif;font-style:italic;font-size:1.1rem;color:#78350F;padding:14px 0">Köszi! Hamarosan jelentkezem.</p>';
+                    }
+                } else if (res.status === 409) {
+                    // Már feliratkozott
+                    if (form.id === 'nl-form') {
+                        form.style.display = 'none';
+                        document.getElementById('nl-success').style.display = 'block';
+                        document.getElementById('nl-success').textContent = 'Már feliratkoztál korábban!';
+                    } else {
+                        form.innerHTML = '<p style="font-family:Instrument Serif,serif;font-style:italic;font-size:1.1rem;color:#78350F;padding:14px 0">Már feliratkoztál korábban!</p>';
+                    }
+                } else {
+                    throw new Error(`Hiba: ${res.status}`);
+                }
+            } catch (err) {
+                console.error('Feliratkozási hiba:', err);
+                button.textContent = 'Hiba, próbáld újra';
+                button.disabled = false;
+                setTimeout(() => { button.textContent = originalText; button.disabled = false; }, 3000);
+            }
+        }
+
         // Forms
         document.querySelectorAll('#hero-form, #nl-form').forEach(form => {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const email = this.querySelector('input[type="email"]').value;
-                console.log('Feliratkozás:', email);
-
-                if (this.id === 'nl-form') {
-                    this.style.display = 'none';
-                    document.getElementById('nl-success').style.display = 'block';
-                } else {
-                    this.innerHTML = '<p style="font-family:Instrument Serif,serif;font-style:italic;font-size:1.1rem;color:#78350F;padding:14px 0">Köszi! Hamarosan jelentkezem.</p>';
-                }
+                subscribe(email, this);
             });
         });
 
